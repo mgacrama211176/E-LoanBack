@@ -8,6 +8,6 @@ export const createAdminValidator = z.object({
 
     password: z
       .string()
-      .min(12, "Password is required and must have 12 characters"),
+      .min(6, "Password is required and must have 12 characters"),
   }),
 });
