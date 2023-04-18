@@ -5,21 +5,21 @@ const router = express.Router();
 
 /* GET users listing. */
 router.post("/", async (request, response) => {
-  const { username, password } = request.body;
-  console.log("adasdasdasd");
+  const { email, password } = request.body;
+  console.log(email);
 
-  adminModel.findOne({ username: request.body.username }).then((data) => {
+  adminModel.findOne({ email: request.body.email }).then((data) => {
     if (data) {
-      bcrypt.compare(request.body.password, data.password).then((result) => {
-        // console.log(result);
-        if (result) {
-          response.status(200).send({ message: `Password Correct` });
-        } else {
-          response.status(401).send({
-            error: `Password Incorrect. Please try again`,
-          });
-        }
-      });
+      console.log(data);
+      // bcrypt.compare(password, data.password).then((result) => {
+      //   if (result) {
+      //     response.status(200).send({ message: `Password Correct` });
+      //   } else {
+      //     response.status(401).send({
+      //       error: `Password Incorrect. Please try again`,
+      //     });
+      //   }
+      // });
     }
   });
 });

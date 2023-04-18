@@ -18,7 +18,7 @@ export const Signin = catchAsync(async (request, response, next) => {
 
   const foundUser = await CheckEmailandPasswordService(body);
 
-  // checks if there is a jwt cookie that was also sent by the client.
+  // // checks if there is a jwt cookie that was also sent by the client.
 
   if (cookies.jwt) {
     foundUser.refreshToken = foundUser.refreshToken.filter(
@@ -28,7 +28,7 @@ export const Signin = catchAsync(async (request, response, next) => {
     clearCookie(request, response);
   }
 
-  // create accessToken
+  // // create accessToken
   const accessToken = jwt.sign(
     { email: foundUser.email },
     process.env.JWT_ACCESSTOKEN_SECRET,
@@ -36,7 +36,6 @@ export const Signin = catchAsync(async (request, response, next) => {
       expiresIn: 30,
     }
   );
-
   // create refreshToken
   const refreshToken = jwt.sign(
     { email: foundUser.email },
@@ -64,6 +63,7 @@ export const Signin = catchAsync(async (request, response, next) => {
     data: {
       email: foundUser.email,
       roles: foundUser.role,
+
       accessToken,
     },
   });

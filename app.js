@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, "public")));
 //Routes
 app.use("/api/clients", clientsRouter);
 app.use("/product", newProduct);
-app.use("/login", login);
+// app.use("/login", login);
 app.use("/search", SearchRoute);
 app.use("/api/v1/user", newAdmin);
 app.use("/api/v1/auth", authRoute);
