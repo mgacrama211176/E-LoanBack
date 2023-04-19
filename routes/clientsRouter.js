@@ -7,10 +7,9 @@ import HttpErrorCode from "../utils/HttpErrorCodes.js";
 
 // router.use(desirealize);
 
-/* Adding of products */
+/* Adding of Clients */
 router.post("/", async (request, response) => {
   const clientData = request.body;
-  console.log(clientData);
   try {
     const newClient = new ClientsModel(clientData);
     await newClient.save();
@@ -21,12 +20,24 @@ router.post("/", async (request, response) => {
   }
 });
 
+//GET ALL CLIENTS
 router.get("/", async (request, response) => {
   try {
     const Data = await ClientsModel.find({});
-    response.status(200).json(Data);
+    response.status(HttpSuccessCode.OK).json(Data);
   } catch (err) {
-    response.status(500).json(err);
+    response.status(HttpErrorCode.InternalServerError).json(err);
+  }
+});
+//GET SINGLE CLIENT WITH IT'S ID
+router.get("/:id", async (request, response) => {
+  const id = request.params.id;
+  console.log(id);
+  try {
+    const Data = await ClientsModel.findById({ _id: id });
+    response.status(HttpSuccessCode.Accepted).json(Data);
+  } catch (err) {
+    response.status(HttpErrorCode.InternalServerError).json(err);
   }
 });
 
