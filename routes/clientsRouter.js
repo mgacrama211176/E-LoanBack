@@ -46,9 +46,10 @@ router.post("/", async (request, response) => {
         paid: false,
       };
       const Transaction = new newTransaction(Data);
-      await newClient.transactions.push(Transaction._id); // push the transaction ID to the newClient's transactions array
-      await newClient.save();
-      await Transaction.save();
+      newClient.transactions.push(Transaction._id); // push the transaction ID to the newClient's transactions array
+
+      // await newClient.save();
+      // await Transaction.save();
       response.status(HttpSuccessCode.Created).json({ newClient, Transaction });
     }
   } catch (err) {
