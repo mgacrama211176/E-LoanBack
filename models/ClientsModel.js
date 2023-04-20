@@ -5,12 +5,11 @@ const clientsSchema = new mongoose.Schema({
   address: { type: String, required: true },
   email: { type: String },
   phoneNumber: { type: Number, required: true },
-  date: { type: String },
-  dueDate: { type: String },
-  amount: { type: Number, required: true },
   handlerName: { type: String },
   investorName: { type: String },
+  clientLevel: { type: Number },
   transactions: { type: Array },
+  blocked: { type: Boolean },
 });
 
 const ClientsModel = mongoose.model("Clients", clientsSchema);
