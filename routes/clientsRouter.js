@@ -2,11 +2,9 @@ import express from "express";
 import ClientsModel from "../models/ClientsModel.js";
 import newTransaction from "../models/TransactionModel.js";
 
-import desirealize from "../middleware/desirealize.js";
+// import desirealize from "../middleware/desirealize.js";
 import HttpSuccessCode from "../utils/HttpSuccessCodes.js";
 import HttpErrorCode from "../utils/HttpErrorCodes.js";
-
-import Randomstring from "randomstring";
 
 const router = express.Router();
 // router.use(desirealize);
@@ -14,9 +12,7 @@ const router = express.Router();
 /* Adding of Clients */
 router.post("/", async (request, response) => {
   const clientData = request.body;
-
   try {
-    // console.log(clientData);
     const validate = await ClientsModel.findOne({
       name: clientData.name,
     });
@@ -32,7 +28,6 @@ router.post("/", async (request, response) => {
         return `${randomStr}`;
       };
       const userIdentifier = generateCode();
-
       const newClient = new ClientsModel({
         ...clientData,
         userIdentifier,
@@ -47,9 +42,8 @@ router.post("/", async (request, response) => {
       };
       const Transaction = new newTransaction(Data);
       newClient.transactions.push(Transaction._id); // push the transaction ID to the newClient's transactions array
-
-      // await newClient.save();
-      // await Transaction.save();
+      await newClient.save();
+      await Transaction.save();
       response.status(HttpSuccessCode.Created).json({ newClient, Transaction });
     }
   } catch (err) {
@@ -69,7 +63,6 @@ router.get("/", async (request, response) => {
 //GET SINGLE CLIENT WITH IT'S ID
 router.get("/:id", async (request, response) => {
   const id = request.params.id;
-  console.log(id);
   try {
     const Data = await ClientsModel.findById({ _id: id });
     response.status(HttpSuccessCode.Accepted).json(Data);
