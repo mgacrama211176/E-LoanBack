@@ -19,8 +19,13 @@ router.post("/", async (request, response) => {
 // View all Transactions
 router.get("/", async (request, response) => {
   try {
-    const Data = await newTransaction.find({});
-    response.status(200).json(Data);
+    const data = await newTransaction.find({});
+    const sortedData = data.sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateB - dateA;
+    });
+    response.status(200).json(sortedData);
   } catch (err) {
     response.status(HttpErrorCode.InternalServerError).json(Data);
   }
