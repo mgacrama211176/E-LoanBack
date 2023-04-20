@@ -1,20 +1,33 @@
 import express from "express";
 import ClientsModel from "../models/ClientsModel.js";
-const router = express.Router();
+import newTransaction from "../models/TransactionModel.js";
+
 import desirealize from "../middleware/desirealize.js";
 import HttpSuccessCode from "../utils/HttpSuccessCodes.js";
 import HttpErrorCode from "../utils/HttpErrorCodes.js";
 
+const router = express.Router();
 // router.use(desirealize);
 
 /* Adding of Clients */
 router.post("/", async (request, response) => {
   const clientData = request.body;
+
   try {
     const newClient = new ClientsModel(clientData);
-    await newClient.save();
 
-    response.status(HttpSuccessCode.Created).json(newClient);
+    const Data = {
+      clientId: newClient._id,
+      date: clientData.date,
+      dueDate: clientData.dueDate,
+      amount: clientData.amount,
+      paid: false,
+    };
+    const Transaction = new newTransaction(Data);
+    await newClient.save();
+    await Transaction.save();
+
+    response.status(HttpSuccessCode.Created).json({ newClient, Transaction });
   } catch (err) {
     response.status(HttpErrorCode.InternalServerError).json(err);
   }
