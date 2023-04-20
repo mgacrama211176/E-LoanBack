@@ -31,6 +31,17 @@ router.get("/", async (request, response) => {
   }
 });
 
+// View Transaction using ID
+router.get("/:id", async (request, response) => {
+  const clientId = request.params.id;
+  try {
+    const data = await newTransaction.find({ clientId: clientId, paid: false });
+    response.status(200).json(data);
+  } catch (err) {
+    response.status(HttpErrorCode.InternalServerError).json(err);
+  }
+});
+
 router.put("/:id", async (request, response) => {
   try {
     const Data = await newTransaction.findByIdAndUpdate(
