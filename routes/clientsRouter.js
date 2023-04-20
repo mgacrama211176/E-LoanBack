@@ -14,21 +14,30 @@ router.post("/", async (request, response) => {
   const clientData = request.body;
 
   try {
-    const newClient = new ClientsModel(clientData);
+    // console.log(clientData);
+    const validate = await ClientsModel.findOne({
+      name: clientData.name,
+    });
 
-    const Data = {
-      clientId: newClient._id,
-      date: clientData.date,
-      dueDate: clientData.dueDate,
-      amount: clientData.amount,
-      paid: false,
-    };
-    const Transaction = new newTransaction(Data);
-    await newClient.transactions.push(Transaction._id); // push the transaction ID to the newClient's transactions array
-    await newClient.save();
-    await Transaction.save();
-
-    response.status(HttpSuccessCode.Created).json({ newClient, Transaction });
+    if (validate) {
+      response
+        .status(HttpErrorCode.Conflict)
+        .json({ validate, message: "This user already exist!!" });
+    } else {
+      const newClient = new ClientsModel(clientData);
+      const Data = {
+        clientId: newClient._id,
+        date: clientData.date,
+        dueDate: clientData.dueDate,
+        amount: clientData.amount,
+        paid: false,
+      };
+      const Transaction = new newTransaction(Data);
+      await newClient.transactions.push(Transaction._id); // push the transaction ID to the newClient's transactions array
+      await newClient.save();
+      await Transaction.save();
+      response.status(HttpSuccessCode.Created).json({ newClient, Transaction });
+    }
   } catch (err) {
     response.status(HttpErrorCode.InternalServerError).json(err);
   }
