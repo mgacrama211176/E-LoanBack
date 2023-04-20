@@ -6,6 +6,8 @@ import desirealize from "../middleware/desirealize.js";
 import HttpSuccessCode from "../utils/HttpSuccessCodes.js";
 import HttpErrorCode from "../utils/HttpErrorCodes.js";
 
+import Randomstring from "randomstring";
+
 const router = express.Router();
 // router.use(desirealize);
 
@@ -18,13 +20,24 @@ router.post("/", async (request, response) => {
     const validate = await ClientsModel.findOne({
       name: clientData.name,
     });
-
+    //check if the user already exist in the database
     if (validate) {
       response
         .status(HttpErrorCode.Conflict)
         .json({ validate, message: "This user already exist!!" });
     } else {
-      const newClient = new ClientsModel(clientData);
+      //continue with the usual process
+      const generateCode = () => {
+        const randomStr = Math.floor(Math.random() * 10000000000);
+        return `${randomStr}`;
+      };
+      const userIdentifier = generateCode();
+
+      const newClient = new ClientsModel({
+        ...clientData,
+        userIdentifier,
+      });
+
       const Data = {
         clientId: newClient._id,
         date: clientData.date,

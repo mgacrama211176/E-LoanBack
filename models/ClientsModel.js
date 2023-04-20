@@ -10,7 +10,7 @@ const clientsSchema = new mongoose.Schema({
   clientLevel: { type: Number },
   transactions: { type: Array },
   blocked: { type: Boolean },
-  userIdentifier: { type: String },
+  userIdentifier: { type: Number, unique: true },
 });
 
 const ClientsModel = mongoose.model("Clients", clientsSchema);
