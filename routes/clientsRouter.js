@@ -33,12 +33,14 @@ router.post("/", async (request, response) => {
         userIdentifier,
       });
 
+      const transactionIdentifier = generateCode();
       const Data = {
         clientId: newClient._id,
         date: clientData.date,
         dueDate: clientData.dueDate,
         amount: clientData.amount,
         paid: false,
+        transactionId: transactionIdentifier,
       };
       const Transaction = new newTransaction(Data);
       newClient.transactions.push(Transaction._id); // push the transaction ID to the newClient's transactions array
