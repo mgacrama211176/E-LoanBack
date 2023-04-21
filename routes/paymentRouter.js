@@ -62,9 +62,10 @@ router.post("/", async (request, response) => {
 });
 
 //retrieving all payment transactions
-router.get("/", async (request, response) => {
+router.get("/:clientId", async (request, response) => {
+  const id = request.params.clientId;
   try {
-    const Data = await PaymentModel.find({});
+    const Data = await PaymentModel.find({ clientId: id });
     response.status(HttpSuccessCode.OK).json(Data);
   } catch (err) {
     response.status(HttpErrorCode.InternalServerError).json(err);
