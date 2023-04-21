@@ -7,8 +7,19 @@ const router = express.Router();
 /* Adding of Transactions */
 router.post("/", async (request, response) => {
   const transactionData = request.body;
+
+  //generates new transaction IF every transaction since this would be the data needed when processing the payment
+  const generateCode = () => {
+    const randomStr = Math.floor(Math.random() * 10000000000);
+    return `${randomStr}`;
+  };
+  const transactionId = generateCode();
+
   try {
-    const Transaction = new newTransaction(transactionData);
+    const Transaction = new newTransaction({
+      ...transactionData,
+      transactionId,
+    });
     await Transaction.save();
     response.status(HttpSuccessCode.Created).json(Transaction);
   } catch (err) {

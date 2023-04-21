@@ -2,7 +2,7 @@ import express from "express";
 import ClientsModel from "../models/ClientsModel.js";
 import newTransaction from "../models/TransactionModel.js";
 
-// import desirealize from "../middleware/desirealize.js";
+import desirealize from "../middleware/desirealize.js";
 import HttpSuccessCode from "../utils/HttpSuccessCodes.js";
 import HttpErrorCode from "../utils/HttpErrorCodes.js";
 

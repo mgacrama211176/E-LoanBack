@@ -5,7 +5,9 @@ const TransactionSchema = new mongoose.Schema({
   date: { type: String },
   dueDate: { type: String },
   amount: { type: Number, default: 0 },
+  balance: { type: Number, default: 0 },
   paid: { type: Boolean, default: false },
+  transactionId: { type: Number },
 });
 
 const TransactionModel = mongoose.model("Transactions", TransactionSchema);

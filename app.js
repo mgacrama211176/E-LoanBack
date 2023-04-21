@@ -10,6 +10,7 @@ import logger from "morgan";
 import newAdmin from "./routes/Admin.Route.js";
 import authRoute from "./routes/Auth.Route.js";
 import transactionRoute from "./routes/transactionRouter.js";
+import PaymentRoute from "./routes/paymentRouter.js";
 import login from "./routes/login.js";
 import SearchRoute from "./routes/search.js";
 
@@ -35,6 +36,7 @@ app.use(express.static(path.join(__dirname, "public")));
 //Routes
 app.use("/api/clients", clientsRouter);
 app.use("/api/transactions", transactionRoute);
+app.use("/api/payments", PaymentRoute);
 // app.use("/login", login);
 app.use("/search", SearchRoute);
 app.use("/api/v1/user", newAdmin);
