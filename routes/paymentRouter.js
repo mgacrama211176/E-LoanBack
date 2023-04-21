@@ -61,4 +61,14 @@ router.post("/", async (request, response) => {
   }
 });
 
+//retrieving all payment transactions
+router.get("/", async (request, response) => {
+  try {
+    const Data = await PaymentModel.find({});
+    response.status(HttpSuccessCode.OK).json(Data);
+  } catch (err) {
+    response.status(HttpErrorCode.InternalServerError).json(err);
+  }
+});
+
 export default router;
