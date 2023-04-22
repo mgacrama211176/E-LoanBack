@@ -46,7 +46,7 @@ router.get("/", async (request, response) => {
 router.get("/:id", async (request, response) => {
   const clientId = request.params.id;
   try {
-    const data = await newTransaction.find({ clientId: clientId, paid: false });
+    const data = await newTransaction.find({ clientId: clientId });
     response.status(200).json(data);
   } catch (err) {
     response.status(HttpErrorCode.InternalServerError).json(err);
