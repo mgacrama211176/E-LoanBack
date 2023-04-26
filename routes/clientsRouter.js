@@ -61,8 +61,8 @@ router.post("/", async (request, response) => {
         );
         const Transaction = new newTransaction(Data);
         newClient.transactions.push(Transaction._id); // push the transaction ID to the newClient's transactions array
-        // await newClient.save();
-        // await Transaction.save();
+        await newClient.save();
+        await Transaction.save();
         response
           .status(HttpSuccessCode.Created)
           .json({ newClient, Transaction, updateAdmin });
