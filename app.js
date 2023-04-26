@@ -12,7 +12,6 @@ import authRoute from "./routes/Auth.Route.js";
 import transactionRoute from "./routes/transactionRouter.js";
 import PaymentRoute from "./routes/paymentRouter.js";
 import login from "./routes/login.js";
-import SearchRoute from "./routes/search.js";
 import investorRoute from "./routes/InvestorRoute.js";
 
 //DrenchWorks
@@ -22,7 +21,7 @@ import clientsRouter from "./routes/clientsRouter.js";
 import connectdb from "./connectdb.js";
 import errorController from "./controller/Error.controller.js";
 connectdb(
-  "mongodb+srv://admin:admin123@production.2pichhy.mongodb.net/test",
+  "mongodb+srv://admin:admin123@e-loan.c4ipwsl.mongodb.net/?retryWrites=true&w=majority",
   "E-Loan"
 );
 
@@ -40,7 +39,7 @@ app.use("/api/transactions", transactionRoute);
 app.use("/api/payments", PaymentRoute);
 app.use("/api/investor", investorRoute);
 app.use("/login", login);
-app.use("/search", SearchRoute);
+
 app.use("/api/v1/user", newAdmin);
 app.use("/api/v1/auth", authRoute);
 

@@ -84,11 +84,23 @@ router.get("/", async (request, response) => {
     response.status(HttpErrorCode.InternalServerError).json(err);
   }
 });
+
 //GET SINGLE CLIENT WITH IT'S ID
 router.get("/:id", async (request, response) => {
   const id = request.params.id;
   try {
     const Data = await ClientsModel.findById({ _id: id });
+    response.status(HttpSuccessCode.Accepted).json(Data);
+  } catch (err) {
+    response.status(HttpErrorCode.InternalServerError).json(err);
+  }
+});
+
+//GET SINGLE CLIENT Using userIdentifier/Account Id
+router.get("/search/:userIdentifier", async (request, response) => {
+  const userIdentifier = request.params.userIdentifier;
+  try {
+    const Data = await ClientsModel.find({ userIdentifier: userIdentifier });
     response.status(HttpSuccessCode.Accepted).json(Data);
   } catch (err) {
     response.status(HttpErrorCode.InternalServerError).json(err);
