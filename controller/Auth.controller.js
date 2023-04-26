@@ -68,6 +68,7 @@ export const Signin = catchAsync(async (request, response, next) => {
       investors: foundUser.investors,
       handlers: foundUser.handlers,
       clients: foundUser.clients,
+      adminId: foundUser._id,
       accessToken,
     },
   });

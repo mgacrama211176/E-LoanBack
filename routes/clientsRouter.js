@@ -1,6 +1,7 @@
 import express from "express";
 import ClientsModel from "../models/ClientsModel.js";
 import newTransaction from "../models/TransactionModel.js";
+import adminModel from "../models/Admin.Model.js";
 
 import desirealize from "../middleware/desirealize.js";
 import HttpSuccessCode from "../utils/HttpSuccessCodes.js";
@@ -12,41 +13,62 @@ const router = express.Router();
 /* Adding of Clients */
 router.post("/", async (request, response) => {
   const clientData = request.body;
-  try {
-    const validate = await ClientsModel.findOne({
-      name: clientData.name,
-    });
-    //check if the user already exist in the database
-    if (validate) {
-      response
-        .status(HttpErrorCode.Conflict)
-        .json({ validate, message: "This user already exist!!" });
-    } else {
-      //continue with the usual process
-      const generateCode = () => {
-        const randomStr = Math.floor(Math.random() * 10000000000);
-        return `${randomStr}`;
-      };
-      const userIdentifier = generateCode();
-      const newClient = new ClientsModel({
-        ...clientData,
-        userIdentifier,
-      });
 
-      const transactionIdentifier = generateCode();
-      const Data = {
-        clientId: newClient._id,
-        date: clientData.date,
-        dueDate: clientData.dueDate,
-        amount: clientData.amount,
-        paid: false,
-        transactionId: transactionIdentifier,
-      };
-      const Transaction = new newTransaction(Data);
-      newClient.transactions.push(Transaction._id); // push the transaction ID to the newClient's transactions array
-      await newClient.save();
-      await Transaction.save();
-      response.status(HttpSuccessCode.Created).json({ newClient, Transaction });
+  try {
+    const checkSlot = await adminModel.find({ _id: clientData.adminId });
+    const slotAvailable = checkSlot[0].slots;
+    if (slotAvailable === 0) {
+      return response.status(401).json("Buy more slots!");
+    }
+
+    try {
+      const validate = await ClientsModel.findOne({
+        name: clientData.name,
+      });
+      //check if the user already exist in the database
+      if (validate) {
+        response
+          .status(HttpErrorCode.Conflict)
+          .json({ validate, message: "This user already exist!!" });
+      } else {
+        //continue with the usual process
+        const generateCode = () => {
+          const randomStr = Math.floor(Math.random() * 10000000000);
+          return `${randomStr}`;
+        };
+        const userIdentifier = generateCode();
+        const newClient = new ClientsModel({
+          ...clientData,
+          userIdentifier,
+        });
+        const transactionIdentifier = generateCode();
+        const Data = {
+          clientId: newClient._id,
+          date: clientData.date,
+          dueDate: clientData.dueDate,
+          amount: clientData.amount,
+          paid: false,
+          transactionId: transactionIdentifier,
+        };
+        //Update Admin Slots
+        const updateAdmin = await adminModel.findByIdAndUpdate(
+          request.body.adminId,
+          {
+            $inc: { slots: -1 },
+            $set: { clients: newClient._id },
+          },
+          { new: true }
+        );
+        const Transaction = new newTransaction(Data);
+        newClient.transactions.push(Transaction._id); // push the transaction ID to the newClient's transactions array
+        // await newClient.save();
+        // await Transaction.save();
+        response
+          .status(HttpSuccessCode.Created)
+          .json({ newClient, Transaction, updateAdmin });
+      }
+    } catch (err) {
+      response.status(HttpErrorCode.InternalServerError).json(err);
     }
   } catch (err) {
     response.status(HttpErrorCode.InternalServerError).json(err);
