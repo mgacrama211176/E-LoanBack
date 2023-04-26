@@ -36,6 +36,7 @@ export const Signin = catchAsync(async (request, response, next) => {
       expiresIn: 30,
     }
   );
+
   // create refreshToken
   const refreshToken = jwt.sign(
     { email: foundUser.email },
@@ -63,6 +64,10 @@ export const Signin = catchAsync(async (request, response, next) => {
     data: {
       email: foundUser.email,
       roles: foundUser.role,
+      slots: foundUser.slots,
+      investors: foundUser.investors,
+      handlers: foundUser.handlers,
+      clients: foundUser.clients,
       accessToken,
     },
   });
