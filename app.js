@@ -22,7 +22,7 @@ import clientsRouter from "./routes/clientsRouter.js";
 import connectdb from "./connectdb.js";
 import errorController from "./controller/Error.controller.js";
 connectdb(
-  "mongodb+srv://admin:admin123@e-loan.c4ipwsl.mongodb.net/?retryWrites=true&w=majority",
+  "mongodb+srv://admin:admin123@production.2pichhy.mongodb.net/test",
   "E-Loan"
 );
 
