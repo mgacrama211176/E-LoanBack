@@ -63,7 +63,6 @@ export const Signin = catchAsync(async (request, response, next) => {
     data: {
       email: foundUser.email,
       roles: foundUser.role,
-
       accessToken,
     },
   });
@@ -156,6 +155,10 @@ export const HandleAuthRefresh = catchAsync(async (request, response) => {
     data: {
       email: foundUser.email,
       roles: foundUser.role,
+      slots: foundUser.slots,
+      investors: foundUser.investors,
+      handlers: foundUser.handlers,
+      clients: foundUser.clients,
       accessToken,
     },
   });

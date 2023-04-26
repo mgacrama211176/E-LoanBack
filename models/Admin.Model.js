@@ -17,6 +17,19 @@ const administrator = new mongoose.Schema({
     type: [String],
     default: ["8546"],
   },
+  slots: {
+    type: Number,
+    default: 5,
+  },
+  investors: {
+    type: Array,
+    default: [],
+  },
+  handlers: {
+    type: Array,
+    default: [],
+  },
+  clients: { type: Array, default: [] },
   refreshToken: {
     type: [String],
     select: false,
