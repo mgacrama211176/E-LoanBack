@@ -11,7 +11,6 @@ const router = express.Router();
 //Adding of new Investor to the database
 router.post("/", async (request, response) => {
   const investorInfo = request.body;
-
   const data = new InvestorModel(investorInfo);
   await data.save();
   response.status(HttpSuccessCode.Created).json(data);
