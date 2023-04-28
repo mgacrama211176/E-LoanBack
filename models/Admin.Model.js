@@ -8,6 +8,15 @@ const administrator = new mongoose.Schema({
     unique: true,
     required: true,
   },
+  fullName: {
+    type: String,
+  },
+  address: {
+    type: String,
+  },
+  phoneNumber: {
+    type: String,
+  },
   password: {
     type: String,
     required: true,

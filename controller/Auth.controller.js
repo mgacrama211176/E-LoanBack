@@ -63,6 +63,9 @@ export const Signin = catchAsync(async (request, response, next) => {
     status: "success",
     data: {
       email: foundUser.email,
+      fullName: foundUser.fullName,
+      address: foundUser.address,
+      phoneNumber: foundUser.phoneNumber,
       roles: foundUser.role,
       slots: foundUser.slots,
       investors: foundUser.investors,
@@ -160,11 +163,15 @@ export const HandleAuthRefresh = catchAsync(async (request, response) => {
     status: "success",
     data: {
       email: foundUser.email,
+      fullName: foundUser.fullName,
+      address: foundUser.address,
+      phoneNumber: foundUser.phoneNumber,
       roles: foundUser.role,
       slots: foundUser.slots,
       investors: foundUser.investors,
       handlers: foundUser.handlers,
       clients: foundUser.clients,
+      adminId: foundUser._id,
       accessToken,
     },
   });
