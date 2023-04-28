@@ -8,6 +8,7 @@ const InvestorSchema = new mongoose.Schema({
   managerName: { type: String, required: true },
   investmentAmount: { type: Number, required: true },
   inventmentRemaining: { type: Number, required: true },
+  date: { type: String },
 });
 
 const InvestorModel = mongoose.model("Investor", InvestorSchema);
