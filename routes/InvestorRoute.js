@@ -4,6 +4,7 @@ import InvestorModel from "../models/InvestorModel.js";
 import desirealize from "../middleware/desirealize.js";
 import HttpSuccessCode from "../utils/HttpSuccessCodes.js";
 import HttpErrorCode from "../utils/HttpErrorCodes.js";
+import adminModel from "../models/Admin.Model.js";
 
 const router = express.Router();
 // router.use(desirealize);
@@ -13,7 +14,16 @@ router.post("/", async (request, response) => {
   const investorInfo = request.body;
   const data = new InvestorModel(investorInfo);
   await data.save();
-  response.status(HttpSuccessCode.Created).json(data);
+
+  //Update Admin Slots
+  const updateAdmin = await adminModel.findByIdAndUpdate(
+    request.body.managerId,
+    {
+      $set: { investors: data._id },
+    },
+    { new: true }
+  );
+  response.status(HttpSuccessCode.Created).json({ data, updateAdmin });
 });
 
 //View ll investors in the system

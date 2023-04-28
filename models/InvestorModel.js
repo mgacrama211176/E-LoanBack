@@ -6,6 +6,7 @@ const InvestorSchema = new mongoose.Schema({
   email: { type: String },
   phoneNumber: { type: String, required: true },
   managerName: { type: String, required: true },
+  managerId: { type: String, required: true },
   investmentAmount: { type: Number, required: true },
   inventmentRemaining: { type: Number, required: true },
   date: { type: String },
