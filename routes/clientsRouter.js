@@ -48,6 +48,7 @@ router.post("/", async (request, response) => {
           date: clientData.date,
           dueDate: clientData.dueDate,
           amount: clientData.amount,
+          balance: clientData.balance,
           paid: false,
           transactionId: transactionIdentifier,
         };
