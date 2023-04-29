@@ -19,7 +19,7 @@ router.post("/", async (request, response) => {
   const updateAdmin = await adminModel.findByIdAndUpdate(
     request.body.managerId,
     {
-      $set: { investors: data._id },
+      $push: { investors: data._id },
     },
     { new: true }
   );

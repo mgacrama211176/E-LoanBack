@@ -6,7 +6,7 @@ const clientsSchema = new mongoose.Schema({
   email: { type: String },
   phoneNumber: { type: Number, required: true },
   handlerName: { type: String },
-  investorName: { type: String },
+  investorId: { type: String },
   clientLevel: { type: Number },
   transactions: { type: Array },
   blocked: { type: Boolean },

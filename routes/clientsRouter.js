@@ -2,6 +2,7 @@ import express from "express";
 import ClientsModel from "../models/ClientsModel.js";
 import newTransaction from "../models/TransactionModel.js";
 import adminModel from "../models/Admin.Model.js";
+import InvestorModel from "../models/InvestorModel.js";
 
 import desirealize from "../middleware/desirealize.js";
 import HttpSuccessCode from "../utils/HttpSuccessCodes.js";
@@ -55,17 +56,29 @@ router.post("/", async (request, response) => {
           request.body.adminId,
           {
             $inc: { slots: -1 },
-            $set: { clients: newClient._id },
+            $push: { clients: newClient._id },
           },
           { new: true }
         );
+
+        //Update Investor Balance
+        const investorBalance = await InvestorModel.findByIdAndUpdate(
+          request.body.investorId,
+          {
+            $inc: {
+              inventmentRemaining: -clientData.amount,
+            },
+          },
+          { new: true }
+        );
+
         const Transaction = new newTransaction(Data);
         newClient.transactions.push(Transaction._id); // push the transaction ID to the newClient's transactions array
         await newClient.save();
         await Transaction.save();
         response
           .status(HttpSuccessCode.Created)
-          .json({ newClient, Transaction, updateAdmin });
+          .json({ newClient, Transaction, updateAdmin, investorBalance });
       }
     } catch (err) {
       response.status(HttpErrorCode.InternalServerError).json(err);
