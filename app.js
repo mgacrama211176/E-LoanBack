@@ -13,6 +13,7 @@ import transactionRoute from "./routes/transactionRouter.js";
 import PaymentRoute from "./routes/paymentRouter.js";
 import login from "./routes/login.js";
 import investorRoute from "./routes/InvestorRoute.js";
+import HandlersRoute from "./routes/handlersRoute.js";
 
 //DrenchWorks
 import clientsRouter from "./routes/clientsRouter.js";
@@ -38,6 +39,7 @@ app.use("/api/clients", clientsRouter);
 app.use("/api/transactions", transactionRoute);
 app.use("/api/payments", PaymentRoute);
 app.use("/api/investor", investorRoute);
+app.use("/api/handlers", HandlersRoute);
 app.use("/login", login);
 
 app.use("/api/v1/user", newAdmin);
