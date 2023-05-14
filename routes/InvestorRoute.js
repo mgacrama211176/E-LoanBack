@@ -26,13 +26,13 @@ router.post("/", async (request, response) => {
   response.status(HttpSuccessCode.Created).json({ data, updateAdmin });
 });
 
-//View ll investors in the system
+//View all investors in the system
 router.get("/", async (request, response) => {
   const data = await InvestorModel.find({});
   response.status(HttpSuccessCode.Accepted).json(data);
 });
 
-//Deletig investor
+//Deleting investor
 router.delete("/:id", async (request, response) => {
   try {
     const removeInvestor = await InvestorModel.findByIdAndDelete(
