@@ -1,5 +1,4 @@
 import express from "express";
-import InvestorModel from "../models/InvestorModel.js";
 
 import desirealize from "../middleware/desirealize.js";
 import HttpSuccessCode from "../utils/HttpSuccessCodes.js";
@@ -16,7 +15,16 @@ router.post("/", async (request, response) => {
   try {
     const data = new HandlerModel(handlerInfo);
     await data.save();
-    response.status(HttpSuccessCode.Created).json(data);
+
+    //Update Admin Data for Investor
+    const updateAdmin = await adminModel.findByIdAndUpdate(
+      request.body.managerId,
+      {
+        $push: { handlers: data._id },
+      },
+      { new: true }
+    );
+    response.status(HttpSuccessCode.Created).json({ data, updateAdmin });
   } catch (err) {
     response.status(HttpErrorCode.InternalServerError);
   }
@@ -31,20 +39,43 @@ router.get("/", async (request, response) => {
     response.status(HttpErrorCode.InternalServerError).json(err);
   }
 });
-// router.post("/", async (request, response) => {
-//   const investorInfo = request.body;
-//   const data = new InvestorModel(investorInfo);
-//   await data.save();
 
-//   //Update Admin Slots
-//   const updateAdmin = await adminModel.findByIdAndUpdate(
-//     request.body.managerId,
-//     {
-//       $push: { investors: data._id },
-//     },
-//     { new: true }
-//   );
-//   response.status(HttpSuccessCode.Created).json({ data, updateAdmin });
-// });
+//Deleting Handler
+
+router.delete("/:id", async (request, response) => {
+  try {
+    const removeInvestor = await HandlerModel.findByIdAndDelete(
+      request.params.id
+    );
+
+    //Update Admin Data for Investor
+    const updateAdmin = await adminModel.findByIdAndUpdate(
+      request.body.managerId,
+      {
+        $pull: { handlers: request.params.id },
+      },
+      { new: true }
+    );
+    response.status(200).json({ removeInvestor, updateAdmin });
+  } catch (err) {
+    response.status(500).json(err);
+  }
+});
+
+//Update Investor Information
+router.put("/:id", async (request, response) => {
+  try {
+    const updateHandler = await HandlerModel.findByIdAndUpdate(
+      request.params.id,
+      {
+        $set: request.body,
+      },
+      { new: true }
+    );
+    response.status(200).json(updateHandler);
+  } catch (err) {
+    response.status(500).json(err);
+  }
+});
 
 export default router;

@@ -26,10 +26,47 @@ router.post("/", async (request, response) => {
   response.status(HttpSuccessCode.Created).json({ data, updateAdmin });
 });
 
-//View ll investors in the system
+//View all investors in the system
 router.get("/", async (request, response) => {
   const data = await InvestorModel.find({});
   response.status(HttpSuccessCode.Accepted).json(data);
+});
+
+//Deleting investor
+router.delete("/:id", async (request, response) => {
+  try {
+    const removeInvestor = await InvestorModel.findByIdAndDelete(
+      request.params.id
+    );
+
+    //Update Admin Data for Investor
+    const updateAdmin = await adminModel.findByIdAndUpdate(
+      request.body.managerId,
+      {
+        $pull: { investors: request.params.id },
+      },
+      { new: true }
+    );
+    response.status(200).json({ removeInvestor, updateAdmin });
+  } catch (err) {
+    response.status(500).json(err);
+  }
+});
+
+//Update Investor Information
+router.put("/:id", async (request, response) => {
+  try {
+    const updateInvestor = await InvestorModel.findByIdAndUpdate(
+      request.params.id,
+      {
+        $set: request.body,
+      },
+      { new: true }
+    );
+    response.status(200).json(updateInvestor);
+  } catch (err) {
+    response.status(500).json(err);
+  }
 });
 
 // router.post("/", async (request, response) => {
@@ -92,30 +129,6 @@ router.get("/", async (request, response) => {
 //     response.status(HttpSuccessCode.Accepted).json(Data);
 //   } catch (err) {
 //     response.status(HttpErrorCode.InternalServerError).json(err);
-//   }
-// });
-
-// router.put("/:id", async (request, response) => {
-//   try {
-//     const updateClient = await newClients.findByIdAndUpdate(
-//       request.params.id,
-//       {
-//         $set: request.body,
-//       },
-//       { new: true }
-//     );
-//     response.status(200).json(updateClient);
-//   } catch (err) {
-//     response.status(500).json(err);
-//   }
-// });
-
-// router.delete("/:id", async (request, response) => {
-//   try {
-//     const removeClient = await newClients.findByIdAndDelete(request.params.id);
-//     response.status(200).json(removeClient);
-//   } catch (err) {
-//     response.status(500).json(err);
 //   }
 // });
 
