@@ -3,6 +3,7 @@ import ClientsModel from "../models/ClientsModel.js";
 import newTransaction from "../models/TransactionModel.js";
 import adminModel from "../models/Admin.Model.js";
 import InvestorModel from "../models/InvestorModel.js";
+import HandlerModel from "../models/handlerModel.js";
 
 import desirealize from "../middleware/desirealize.js";
 import HttpSuccessCode from "../utils/HttpSuccessCodes.js";
@@ -52,6 +53,7 @@ router.post("/", async (request, response) => {
           paid: false,
           transactionId: transactionIdentifier,
         };
+
         //Update Admin Slots
         const updateAdmin = await adminModel.findByIdAndUpdate(
           request.body.adminId,
@@ -73,13 +75,32 @@ router.post("/", async (request, response) => {
           { new: true }
         );
 
+        //Update Handler Status
+        const UpdateHandlerStatus = await HandlerModel.findOneAndUpdate(
+          request.body.handlerName,
+          {
+            $inc: {
+              totalHandledAmount: +clientData.amount,
+            },
+            $push: {
+              clients: newClient._id,
+              InvestorsId: clientData.investorId,
+            },
+          },
+          { new: true }
+        );
+
         const Transaction = new newTransaction(Data);
         newClient.transactions.push(Transaction._id); // push the transaction ID to the newClient's transactions array
         await newClient.save();
         await Transaction.save();
-        response
-          .status(HttpSuccessCode.Created)
-          .json({ newClient, Transaction, updateAdmin, investorBalance });
+        response.status(HttpSuccessCode.Created).json({
+          newClient,
+          Transaction,
+          updateAdmin,
+          investorBalance,
+          UpdateHandlerStatus,
+        });
       }
     } catch (err) {
       response.status(HttpErrorCode.InternalServerError).json(err);
