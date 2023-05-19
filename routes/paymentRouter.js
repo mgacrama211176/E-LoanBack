@@ -5,6 +5,7 @@ import desirealize from "../middleware/desirealize.js";
 import HttpSuccessCode from "../utils/HttpSuccessCodes.js";
 import HttpErrorCode from "../utils/HttpErrorCodes.js";
 import InvestorModel from "../models/InvestorModel.js";
+import HandlerModel from "../models/handlerModel.js";
 
 const router = express.Router();
 // router.use(desirealize);
@@ -37,13 +38,13 @@ router.post("/", async (request, response) => {
       // Update the transaction amount
       const updatedTransaction = await newTransaction.findByIdAndUpdate(
         retrieveData._id,
-        { $set: { amount: retrieveData.amount - Data.amount } },
+        { $inc: { amount: retrieveData.amount - Data.amount } },
         { new: true }
       );
 
       //Update Investor Balance
-      const investorBalance = await InvestorModelorModel.findByIdAndUpdate(
-        request.body.investorId,
+      const investorBalance = await InvestorModel.findByIdAndUpdate(
+        Data.investorId,
         {
           $inc: {
             inventmentRemaining: +Data.amount,
@@ -54,7 +55,7 @@ router.post("/", async (request, response) => {
 
       //Update Handler Status
       const UpdateHandlerStatus = await HandlerModel.findOneAndUpdate(
-        request.body.handlerName,
+        Data.handlerName,
         {
           $inc: {
             totalHandledAmount: -Data.amount,
