@@ -4,6 +4,7 @@ import newTransaction from "../models/TransactionModel.js";
 import desirealize from "../middleware/desirealize.js";
 import HttpSuccessCode from "../utils/HttpSuccessCodes.js";
 import HttpErrorCode from "../utils/HttpErrorCodes.js";
+import InvestorModel from "../models/InvestorModel.js";
 
 const router = express.Router();
 // router.use(desirealize);
@@ -40,6 +41,28 @@ router.post("/", async (request, response) => {
         { new: true }
       );
 
+      //Update Investor Balance
+      const investorBalance = await InvestorModelorModel.findByIdAndUpdate(
+        request.body.investorId,
+        {
+          $inc: {
+            inventmentRemaining: +Data.amount,
+          },
+        },
+        { new: true }
+      );
+
+      //Update Handler Status
+      const UpdateHandlerStatus = await HandlerModel.findOneAndUpdate(
+        request.body.handlerName,
+        {
+          $inc: {
+            totalHandledAmount: -Data.amount,
+          },
+        },
+        { new: true }
+      );
+
       if (updatedTransaction.amount === 0) {
         const balanceStatus = await newTransaction.findByIdAndUpdate(
           retrieveData._id,
@@ -51,7 +74,9 @@ router.post("/", async (request, response) => {
       const newPayment = new PaymentModel(Data);
       await newPayment.save();
       // Return the updated transaction
-      return response.status(HttpSuccessCode.OK).json(newPayment);
+      return response
+        .status(HttpSuccessCode.OK)
+        .json({ newPayment, investorBalance, UpdateHandlerStatus });
     }
   } catch (err) {
     // Return an error response if there is an issue with the database
