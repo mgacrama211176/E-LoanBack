@@ -38,7 +38,7 @@ router.post("/", async (request, response) => {
       // Update the transaction amount
       const updatedTransaction = await newTransaction.findByIdAndUpdate(
         retrieveData._id,
-        { $inc: { amount: retrieveData.amount - Data.amount } },
+        { $set: { amount: retrieveData.amount - Data.amount } },
         { new: true }
       );
 
