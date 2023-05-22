@@ -176,3 +176,8 @@ export const HandleAuthRefresh = catchAsync(async (request, response) => {
     },
   });
 });
+
+export const UpdateAccount = async (request, response) => {
+  const accountData = request.body;
+  response.status(HttpSuccessCode.OK).json(accountData);
+};

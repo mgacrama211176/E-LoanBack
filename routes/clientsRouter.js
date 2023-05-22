@@ -166,4 +166,21 @@ router.delete("/:id", async (request, response) => {
   }
 });
 
+router.put("/block/:id", async (request, response) => {
+  try {
+    const updateClient = await newClients.findByIdAndUpdate(
+      request.params.id,
+      {
+        $set: {
+          blocked: true,
+        },
+      },
+      { new: true }
+    );
+    response.status(200).json(updateClient);
+  } catch (err) {
+    response.status(500).json(err);
+  }
+});
+
 export default router;
