@@ -28,21 +28,21 @@ router.post("/", async (request, response) => {
     // const UpdateHandlerStatus = await HandlerModel.findOneAndUpdate(
     //   transactionData.handlerName
 
-      //we need to check first if the clientID already exists on the handler array if not insert it on its array and remove it from it's previous handler array.
+    //we need to check first if the clientID already exists on the handler array if not insert it on its array and remove it from it's previous handler array.
 
-      // {
-      //   $inc: {
-      //     totalHandledAmount: +transactionData.amount,
-      //   },
+    // {
+    //   $inc: {
+    //     totalHandledAmount: +transactionData.amount,
+    //   },
 
-      //   $push: {
-      //     clients: transactionData._id,
-      //     InvestorsId: transactionData.investorId,
-      //   },
-      // },
+    //   $push: {
+    //     clients: transactionData._id,
+    //     InvestorsId: transactionData.investorId,
+    //   },
+    // },
 
-      // { new: true }
-    );
+    // { new: true }
+    // );
 
     response
       .status(HttpSuccessCode.Created)
