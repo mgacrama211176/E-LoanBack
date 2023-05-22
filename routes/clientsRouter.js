@@ -168,7 +168,7 @@ router.delete("/:id", async (request, response) => {
 
 router.put("/block/:id", async (request, response) => {
   try {
-    const updateClient = await newClients.findByIdAndUpdate(
+    const blockClient = await ClientsModel.findByIdAndUpdate(
       request.params.id,
       {
         $set: {
@@ -177,7 +177,7 @@ router.put("/block/:id", async (request, response) => {
       },
       { new: true }
     );
-    response.status(200).json(updateClient);
+    response.status(200).json(blockClient);
   } catch (err) {
     response.status(500).json(err);
   }
