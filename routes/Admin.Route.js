@@ -9,39 +9,19 @@ import validate from "../middleware/validate.js";
 import { createAdminValidator } from "../validation/adminValidator.js";
 
 // controller
-import { CreateAdmin } from "../controller/Admin.controller.js";
+import {
+  CreateAdmin,
+  getAllAdmin,
+  updateAdmin,
+} from "../controller/Admin.controller.js";
 
 const router = express.Router();
 
-/* GET users listing. */
-// router.post('/', async (request, response) => {
-
-//   //manually adding admin on mongo
-
-//   //bcrypt encrypts the data specially password to hide the password
-//   const hashPassword = await bcrypt.hash(request.body.password, 10);
-//   const username = request.body.username;
-//   const password = hashPassword;
-
-//   try {
-//     const administrator = new adminModel({
-//       username: username,
-//       password: password,
-//     });
-//     await administrator.save();
-//     response.status(201).send({ message: 'Admin Created' });
-//   } catch (e) {
-//     response.status(500).json(err);
-//   }
-// });
-
-// same path can be grouped
-
 router
   .route("/")
-  .get()
+  .get(getAllAdmin)
   .post(validate(createAdminValidator), CreateAdmin)
-  .patch()
+  .put(updateAdmin)
   .delete();
 
 export default router;
