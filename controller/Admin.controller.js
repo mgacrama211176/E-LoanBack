@@ -3,7 +3,9 @@ import {
   CreateAdminUserService,
   GetAdminUserService,
   UpdateAdminService,
+  ChangePasswordService,
 } from "../service/Admin.Service.js";
+import HttpErrorCode from "../utils/HttpErrorCodes.js";
 import HttpSuccessCode from "../utils/HttpSuccessCodes.js";
 
 // create low level admin user
@@ -26,6 +28,16 @@ export const getAllAdmin = async (request, response, next) => {
 
 export const updateAdmin = async (request, response, next) => {
   const { body } = request;
-  const updatedAdmin = await UpdateAdminService(body);
-  response.status(HttpSuccessCode.Accepted).json(updatedAdmin);
+  try {
+    const updatedAdmin = await UpdateAdminService(body);
+    response.status(HttpSuccessCode.Accepted).json(updatedAdmin);
+  } catch (err) {
+    response.status(HttpErrorCode.BadRequest);
+  }
+};
+
+export const changePassword = async (request, response, next) => {
+  const { body } = request;
+  const changePassAdmin = await ChangePasswordService(body);
+  response.status(HttpSuccessCode.Accepted).json(changePassAdmin);
 };

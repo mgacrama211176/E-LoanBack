@@ -1,4 +1,5 @@
 import adminModel from "../models/Admin.Model.js";
+import bcrypt from "bcrypt";
 
 export const CreateAdminUserService = async (data) => {
   const newUser = await adminModel.create(data);
@@ -24,4 +25,17 @@ export const UpdateAdminService = async (data) => {
     { new: true }
   );
   return admin;
+};
+
+export const ChangePasswordService = async (data) => {
+  const { password, email } = data;
+  const salt = await bcrypt.genSalt(12);
+  const hash = await bcrypt.hash(password, salt);
+
+  const changePass = await adminModel.findOneAndUpdate(
+    email,
+    { $set: { password: hash } },
+    { new: true }
+  );
+  return changePass;
 };

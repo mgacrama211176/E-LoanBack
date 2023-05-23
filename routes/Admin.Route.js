@@ -1,6 +1,4 @@
 import express from "express";
-// import adminModel from "../models/Admin.Model.js";
-// import bcrypt from "bcrypt";
 
 // middleware
 import validate from "../middleware/validate.js";
@@ -13,6 +11,7 @@ import {
   CreateAdmin,
   getAllAdmin,
   updateAdmin,
+  changePassword,
 } from "../controller/Admin.controller.js";
 
 const router = express.Router();
@@ -25,3 +24,5 @@ router
   .delete();
 
 export default router;
+
+router.put("/changePassword", changePassword);
