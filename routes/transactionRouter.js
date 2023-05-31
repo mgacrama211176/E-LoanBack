@@ -3,6 +3,7 @@ import newTransaction from "../models/TransactionModel.js";
 import HttpErrorCode from "../utils/HttpErrorCodes.js";
 import HttpSuccessCode from "../utils/HttpSuccessCodes.js";
 import HandlerModel from "../models/handlerModel.js";
+import InvestorModel from "../models/InvestorModel.js";
 const router = express.Router();
 
 /* Adding of Transactions */
@@ -27,9 +28,6 @@ router.post("/", async (request, response) => {
     //Update Handler Status
     const UpdateHandlerStatus = await HandlerModel.findOneAndUpdate(
       transactionData.handlerName,
-
-      //we need to check first if the clientID already exists on the handler array if not insert it on its array and remove it from it's previous handler array.
-
       {
         $inc: {
           totalHandledAmount: +transactionData.amount,
@@ -44,9 +42,21 @@ router.post("/", async (request, response) => {
       { new: true }
     );
 
+    //Update Investor Status
+    const UpdateInvestorStatus = await InvestorModel.findOneAndUpdate(
+      transactionData.investorId,
+      {
+        $inc: {
+          inventmentRemaining: -transactionData.amount,
+        },
+      },
+
+      { new: true }
+    );
+
     response
       .status(HttpSuccessCode.Created)
-      .json({ Transaction, UpdateHandlerStatus });
+      .json({ Transaction, UpdateHandlerStatus, UpdateInvestorStatus });
   } catch (err) {
     response.status(HttpErrorCode.InternalServerError);
   }
