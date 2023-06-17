@@ -12,6 +12,7 @@ import {
   getAllAdmin,
   updateAdmin,
   changePassword,
+  sendOTP,
 } from "../controller/Admin.controller.js";
 
 const router = express.Router();
@@ -26,3 +27,4 @@ router
 export default router;
 
 router.put("/changePassword", changePassword);
+router.post("/OTP", sendOTP);

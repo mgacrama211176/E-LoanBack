@@ -20,6 +20,9 @@ import clientsRouter from "./routes/clientsRouter.js";
 //connecting to DB
 import connectdb from "./connectdb.js";
 import errorController from "./controller/Error.controller.js";
+
+import "dotenv/config";
+
 connectdb(
   "mongodb+srv://admin:admin123@e-loan.c4ipwsl.mongodb.net/?retryWrites=true&w=majority",
   "E-Loan"

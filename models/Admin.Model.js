@@ -9,7 +9,7 @@ const administrator = new mongoose.Schema({
     required: true,
   },
   fullName: { type: String },
-  address: {type: String},
+  address: { type: String },
   phoneNumber: {
     type: String,
   },
@@ -19,12 +19,12 @@ const administrator = new mongoose.Schema({
     select: false,
   },
   role: {
-    type: [String],
-    default: ["8546"],
+    type: String,
+    default: "Admin",
   },
   slots: {
     type: Number,
-    default: 5,
+    default: 15,
   },
   investors: {
     type: Array,
@@ -45,6 +45,10 @@ const administrator = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: true,
+  },
+  isValidated: {
+    type: Boolean,
+    default: false,
   },
 });
 
