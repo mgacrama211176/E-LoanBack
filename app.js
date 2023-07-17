@@ -22,6 +22,7 @@ import connectdb from "./connectdb.js";
 import errorController from "./controller/Error.controller.js";
 
 import "dotenv/config";
+import HttpSuccessCode from "./utils/HttpSuccessCodes.js";
 
 connectdb(
   "mongodb+srv://admin:admin123@e-loan.c4ipwsl.mongodb.net/?retryWrites=true&w=majority",
@@ -45,6 +46,11 @@ app.use("/api/handlers", HandlersRoute);
 
 app.use("/api/v1/user", newAdmin);
 app.use("/api/v1/auth", authRoute);
+app.get("/hello", async (request, response, next) => {
+  response
+    .status(HttpSuccessCode.OK)
+    .json({ message: `database ready to be connected` });
+});
 
 // error controller
 app.use(errorController);
