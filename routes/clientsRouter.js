@@ -142,6 +142,7 @@ router.get("/search/:userIdentifier", async (request, response) => {
   }
 });
 
+//To update the client information using it's ID
 router.put("/:id", async (request, response) => {
   try {
     const updateClient = await newClients.findByIdAndUpdate(
@@ -157,6 +158,7 @@ router.put("/:id", async (request, response) => {
   }
 });
 
+//To DELETE the client information using it's ID
 router.delete("/:id", async (request, response) => {
   try {
     const removeClient = await newClients.findByIdAndDelete(request.params.id);
@@ -166,6 +168,7 @@ router.delete("/:id", async (request, response) => {
   }
 });
 
+//To block the client using it's ID
 router.put("/block/:id", async (request, response) => {
   try {
     const blockClient = await ClientsModel.findByIdAndUpdate(

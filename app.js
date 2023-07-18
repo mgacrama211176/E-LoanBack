@@ -46,6 +46,8 @@ app.use("/api/handlers", HandlersRoute);
 
 app.use("/api/v1/user", newAdmin);
 app.use("/api/v1/auth", authRoute);
+
+//starting of the API
 app.get("/hello", async (request, response, next) => {
   response
     .status(HttpSuccessCode.OK)
